@@ -19,60 +19,60 @@ composer require laszlof/php-hibp
 ### Get a list of breaches for a specific acccount (username/email)
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
 $account = 'you@yourdomain.com';
-$breaches = $hibp->getBreaches($account);
+$breaches = Hibp::getBreaches($account);
 ```
 
 ### Get a single breach by name
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
 $name = 'Adobe';
-$breach = $hibp->getBreach($account);
+$breach = Hibp::getBreach($account);
 ```
 
 ### Get a list of sites that have been breached (optionally filtered by domain)
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
-$breaches = $hibp->getBreachedSites();
+$breaches = Hibp::getBreachedSites();
 
 $domain = 'adobe.com';
-$breaches = $hibp->getBreachedSites($domain);
+$breaches = Hibp::getBreachedSites($domain);
 ```
 
 ### Get a list of the types of dataclasses
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
-$dataClasses = $hibp->getDataClasses();
+$dataClasses = Hibp::getDataClasses();
 ```
 
 ### Get a list of pastes for a specific acccount (username/email)
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
 $account = 'you@yourdomain.com';
-$breaches = $hibp->getPastes($account);
+$breaches = Hibp::getPastes($account);
 ```
 
 ### Check if a password has been compromised.
 ```php
 
-$hibp = new Hibp\Hibp();
+use Hibp\Hibp;
 
 $password = 'password123';
-$isCompromised = $hibp->checkPassword($password);
+$isCompromised = Hibp::checkPassword($password);
 
 // Optionally check with a password that IS a hash itself.
 $password_is_a_hash = '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8';
-$isCompromised = $hibp->checkPassword($password_is_a_hash, true);
+$isCompromised = Hibp::checkPassword($password_is_a_hash, true);
 ```
 
 ## Links

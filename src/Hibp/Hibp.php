@@ -47,7 +47,7 @@ class Hibp {
    * @return Breach
    * @see https://haveibeenpwned.com/API/v2#SingleBreach
    */
-  public function getBreach(string $name) : Breach {
+  static public function getBreach(string $name) : Breach {
     $resp = self::apiCall('breach', $name);
     return new Breach(json_decode($resp));
   }
@@ -59,7 +59,7 @@ class Hibp {
    * @return Breach[]
    * @see https://haveibeenpwned.com/API/v2#BreachesForAccount
    */
-  public function getBreaches(string $account) : array {
+  static public function getBreaches(string $account) : array {
     $resp = self::apiCall('breachedaccount', $account);
     $result = [];
     foreach (json_decode($resp) as $br) {
@@ -76,7 +76,7 @@ class Hibp {
    * @return Breach[]
    * @see https://haveibeenpwned.com/API/v2#AllBreaches
    */
-  public function getBreachedSites(string $domain = null) : array {
+  static public function getBreachedSites(string $domain = null) : array {
     $data = (! is_null($domain)) ? ['domain' => $domain] : [];
     $resp = self::apiCall('breaches', null, $data);
 
@@ -94,7 +94,7 @@ class Hibp {
    * @return array
    * @see https://haveibeenpwned.com/API/v2#AllDataClasses
    */
-  public function getDataClasses() : array {
+  static public function getDataClasses() : array {
     $resp = self::apiCall('dataclasses');
 
     return json_decode($resp);
@@ -108,7 +108,7 @@ class Hibp {
    * @return Paste[]
    * @see https://haveibeenpwned.com/API/v2#PastesForAccount
    */
-  public function getPastes(string $account) : array {
+  static public function getPastes(string $account) : array {
     $resp = self::apiCall('pasteaccount', $account);
 
     $result = [];
@@ -127,7 +127,10 @@ class Hibp {
    * @return bool
    * @see https://haveibeenpwned.com/API/v2#PwnedPasswords
    */
-  public function checkPassword(string $password, bool $hash = false) : bool {
+  static public function checkPassword(
+    string $password,
+    bool $hash = false
+  ) : bool {
     $data = ($hash) ? ['originalPasswordIsAHash' => true] : [];
     try {
       $resp = self::apiCall('pwnedpassword', $password, $data, true);

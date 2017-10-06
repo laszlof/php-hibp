@@ -7,37 +7,25 @@ use Hibp\Models\Paste;
 use PHPUnit\Framework\TestCase;
 
 class HibpTest extends TestCase {
-  /**
-   * Hibp Object
-   * @var Hibp\Hibp
-   */
-  protected $_hibp;
-
-  /**
-   * Setup the tests
-   */
-   protected function setUp() {
-     $this->_hibp = new Hibp();
-   }
 
   public function testGetBreach() {
     $mock = $this->_getMockData(
-      $this->_hibp::ENDPOINT_URL .
-      'v' . $this->_hibp::API_VERSION .
+      Hibp::ENDPOINT_URL .
+      'v' . Hibp::API_VERSION .
       '/breach/Adobe'
     );
-    $test = $this->_hibp->getBreach('Adobe');
+    $test = Hibp::getBreach('Adobe');
 
     $this->_assertBreach($test, json_decode($mock));
   }
 
   public function testGetBreaches() {
     $mock = $this->_getMockData(
-      $this->_hibp::ENDPOINT_URL .
-      'v' . $this->_hibp::API_VERSION .
+      Hibp::ENDPOINT_URL .
+      'v' . Hibp::API_VERSION .
       '/breachedaccount/test@example.com'
     );
-    $test = $this->_hibp->getBreaches('test@example.com');
+    $test = Hibp::getBreaches('test@example.com');
 
     $mock = json_decode($mock);
     $this->assertCount(count($mock), $test);
@@ -48,11 +36,11 @@ class HibpTest extends TestCase {
 
   public function testGetBreachedSites() {
     $mock = $this->_getMockData(
-      $this->_hibp::ENDPOINT_URL .
-      'v' . $this->_hibp::API_VERSION .
+      Hibp::ENDPOINT_URL .
+      'v' . Hibp::API_VERSION .
       '/breaches'
     );
-    $test = $this->_hibp->getBreachedSites();
+    $test = Hibp::getBreachedSites();
 
     $mock = json_decode($mock);
     $this->assertCount(count($mock), $test);
@@ -63,11 +51,11 @@ class HibpTest extends TestCase {
 
   public function testGetDataClasses() {
     $mock = $this->_getMockData(
-      $this->_hibp::ENDPOINT_URL .
-      'v' . $this->_hibp::API_VERSION .
+      Hibp::ENDPOINT_URL .
+      'v' . Hibp::API_VERSION .
       '/dataclasses'
     );
-    $test = $this->_hibp->getDataClasses();
+    $test = Hibp::getDataClasses();
 
     $mock = json_decode($mock);
     $this->assertCount(count($mock), $test);
@@ -75,11 +63,11 @@ class HibpTest extends TestCase {
 
   public function testGetPastes() {
     $mock = $this->_getMockData(
-      $this->_hibp::ENDPOINT_URL .
-      'v' . $this->_hibp::API_VERSION .
+      Hibp::ENDPOINT_URL .
+      'v' . Hibp::API_VERSION .
       '/pasteaccount/test@example.com'
     );
-    $test = $this->_hibp->getPastes('test@example.com');
+    $test = Hibp::getPastes('test@example.com');
 
     $mock = json_decode($mock);
     $this->assertCount(count($mock), $test);
@@ -96,19 +84,19 @@ class HibpTest extends TestCase {
     ];
 
     foreach ($passwords as $pw) {
-      $url = $this->_hibp::ENDPOINT_URL .
-        'v' . $this->_hibp::API_VERSION .
+      $url = Hibp::ENDPOINT_URL .
+        'v' . Hibp::API_VERSION .
         "/pwnedpassword/{$pw}";
       $options = [
-        'http' => ['user_agent' => $this->_hibp::USER_AGENT]];
+        'http' => ['user_agent' => Hibp::USER_AGENT]];
       $context = stream_context_create($options);
       @file_get_contents($url, false, $context);
       preg_match('~[0-9]{3}~', $http_response_header[0], $m);
       $found = (int)$m[0] === 200;
-      $this->assertEquals($this->_hibp->checkPassword($pw), $found);
+      $this->assertEquals(Hibp::checkPassword($pw), $found);
 
       // Sleep to avoid rate limiting
-      sleep(1);
+      sleep(2);
     }
   }
 
@@ -159,10 +147,10 @@ class HibpTest extends TestCase {
    */
   private function _getMockData(string $url) : string {
     $options = [
-      'http' => ['user_agent' => $this->_hibp::USER_AGENT]];
+      'http' => ['user_agent' => Hibp::USER_AGENT]];
     $context = stream_context_create($options);
     // Sleep to avoid rate limiting
-    sleep(1);
+    sleep(2);
     return file_get_contents($url, false, $context);
   }
 }
