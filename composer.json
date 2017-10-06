@@ -1,0 +1,22 @@
+{
+    "name": "laszlof/php-hibp",
+    "description": "A PHP library for communicating with the HaveIBeenPwned.com API",
+    "type": "library",
+    "require": {
+        "php": "^7.0",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": { "Hibp\\": "src/Hibp" }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frank Laszlo",
+            "email": "frank@franksworld.org"
+        }
+    ]
+}
