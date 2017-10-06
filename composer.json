@@ -1,5 +1,6 @@
 {
     "name": "laszlof/php-hibp",
+    "version": "0.1.1",
     "description": "A PHP library for communicating with the HaveIBeenPwned.com API",
     "type": "library",
     "require": {

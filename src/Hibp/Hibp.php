@@ -19,7 +19,7 @@ class Hibp {
    * Library Version
    * @var string
    */
-  const VERSION = '0.1';
+  const VERSION = '0.1.1';
 
   /**
    * API Version
