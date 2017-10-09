@@ -149,8 +149,12 @@ class HibpTest extends TestCase {
     $options = [
       'http' => ['user_agent' => Hibp::USER_AGENT]];
     $context = stream_context_create($options);
-    // Sleep to avoid rate limiting
-    sleep(2);
-    return file_get_contents($url, false, $context);
+    $data = @file_get_contents($url, false, $context);
+    preg_match('~[0-9]{3}~', $http_response_header[0], $m);
+    if ((int)$m === 429) {
+      // Rate Limited. Get retry time.
+      echo var_export($http_response_header, true);
+    }
+    return $data;
   }
 }

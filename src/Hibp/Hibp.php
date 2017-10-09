@@ -44,7 +44,7 @@ class Hibp {
    * Get a single breach by name.
    *
    * @param string $name Name of breach
-   * @return Breach
+   * @return Models\Breach
    * @see https://haveibeenpwned.com/API/v2#SingleBreach
    */
   static public function getBreach(string $name) : Breach {
@@ -56,7 +56,7 @@ class Hibp {
    * Get all breaches for an account
    *
    * @param string $account Username or Email address of account to check.
-   * @return Breach[]
+   * @return Models\Breach[]
    * @see https://haveibeenpwned.com/API/v2#BreachesForAccount
    */
   static public function getBreaches(string $account) : array {
@@ -73,7 +73,7 @@ class Hibp {
    * Get a list of sites that have been breached
    *
    * @param string $domain Filter by domain
-   * @return Breach[]
+   * @return Models\Breach[]
    * @see https://haveibeenpwned.com/API/v2#AllBreaches
    */
   static public function getBreachedSites(string $domain = null) : array {
@@ -168,9 +168,13 @@ class Hibp {
     if (! empty($data)) {
       $url .= '?' . http_build_query($data);
     }
-    $resp = $client->request('GET', $url);
-    if ($throw && $resp->getStatusCode() !== 200) {
-      throw new \Exception("Status Code: {$resp->getStatusCode()}");
+    try {
+      $resp = $client->request('GET', $url);
+    } catch (\Throwable $e) {
+      $resp = $e->getResponse();
+      if ($throw && $resp->getStatusCode() !== 200) {
+        throw new \Exception("Status Code: {$resp->getStatusCode()}");
+      }
     }
     switch ($resp->getStatusCode()) {
       case 200:
@@ -188,10 +192,10 @@ class Hibp {
       case 429: /* Rate Limit Request */
         $retry = $resp->getHeader('Retry-After');
         sleep((int)$retry);
-        return self::apiCall($service, $param, $data);
+        return self::apiCall($service, $param, $data, $throw);
         break;
       default:
-        throw new \Exception('Invalid Return Code');
+        throw new \Exception("Invalid Return Code: {$resp->getStatusCode()}");
         break;
     }
   }
