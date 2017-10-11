@@ -80,5 +80,3 @@ $isCompromised = Hibp::checkPassword($password_is_a_hash, true);
   * [HaveIBeenPwned](https://haveibeenpwned.com/)
   * [HIBP API v2](https://haveibeenpwned.com/API/v2)
   * [Google](https://www.google.com)
-
-
